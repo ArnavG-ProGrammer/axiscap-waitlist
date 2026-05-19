@@ -1,52 +1,40 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { LineChart, Brain, Zap } from "lucide-react";
 
 const cards = [
   {
-    icon: LineChart,
-    title: "Institutional-grade data",
-    body: "Live markets across NSE, BSE, NYSE, NASDAQ. Forex, crypto, commodities. All in one terminal.",
-    gradient: "from-axis-teal/10 to-transparent",
+    label: "01 · DATA",
+    title: "Real-time market intelligence",
+    body: "Live coverage across NYSE, NASDAQ, NSE, BSE. Forex, crypto, and commodities surfaced through a single unified terminal.",
   },
   {
-    icon: Brain,
-    title: "AI-powered insights",
-    body: "Gemini analyzes every stock. Risk, growth, momentum — grounded in real data, zero hallucinations.",
-    gradient: "from-axis-blue/10 to-transparent",
+    label: "02 · INTELLIGENCE",
+    title: "Grounded AI analysis",
+    body: "Every insight pulls from live financial data — no hallucinations, no fabricated numbers. Risk, valuation, and momentum signals built on real inputs.",
   },
   {
-    icon: Zap,
-    title: "Built for action",
-    body: "DCF valuation, strategy backtesting, technical indicators, comparison overlays. Tools that actually work.",
-    gradient: "from-axis-amber/10 to-transparent",
+    label: "03 · EXECUTION",
+    title: "Institutional-grade tooling",
+    body: "DCF valuation models, strategy backtesting, technical screening, and portfolio analytics — designed for serious operators, not retail dashboards.",
   },
 ];
 
 export default function WhyAxisCap() {
   return (
-    <section className="relative py-[120px] md:py-[160px] px-6 overflow-hidden">
-      {/* Background accent */}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full pointer-events-none"
-        style={{
-          background: "radial-gradient(ellipse, rgba(0,230,172,0.03) 0%, transparent 70%)",
-        }}
-      />
-
-      <div className="relative max-w-6xl mx-auto">
+    <section className="py-[120px] md:py-[160px] px-6">
+      <div className="max-w-6xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <span className="inline-block glass rounded-full px-4 py-1.5 font-mono text-[10px] tracking-[4px] text-axis-amber uppercase mb-6">
+          <p className="text-[11px] text-ax-text-dim tracking-[3px] uppercase mb-4">
             WHY AXISCAP
-          </span>
-          <h2 className="font-sans font-light text-[32px] md:text-[56px] text-white leading-tight max-w-[800px] mx-auto">
+          </p>
+          <h2 className="font-light text-[36px] md:text-[56px] text-white leading-tight tracking-[-1.5px]">
             Built for serious operators.
           </h2>
         </motion.div>
@@ -55,28 +43,21 @@ export default function WhyAxisCap() {
           {cards.map((card, i) => (
             <motion.div
               key={i}
-              initial={{ opacity: 0, y: 24 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: i * 0.12, duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="group relative glass glass-hover rounded-xl p-8 overflow-hidden"
+              transition={{ delay: i * 0.08, duration: 0.6 }}
+              className="bg-ax-card border border-ax-border rounded-lg p-10 hover:border-ax-border-strong transition-colors duration-200"
             >
-              {/* Top gradient glow on hover */}
-              <div
-                className={`absolute top-0 left-0 right-0 h-32 bg-gradient-to-b ${card.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none`}
-              />
-
-              <div className="relative">
-                <div className="w-10 h-10 rounded-lg glass flex items-center justify-center mb-6">
-                  <card.icon className="w-5 h-5 text-axis-teal" />
-                </div>
-                <h3 className="font-sans font-medium text-[20px] text-white mb-3 tracking-[-0.01em]">
-                  {card.title}
-                </h3>
-                <p className="font-mono text-[12px] text-axis-text2 leading-[1.8]">
-                  {card.body}
-                </p>
-              </div>
+              <p className="text-[11px] text-ax-text-dim tracking-[2px] uppercase mb-5">
+                {card.label}
+              </p>
+              <h3 className="font-semibold text-[24px] md:text-[28px] text-white mb-4 tracking-[-0.5px]">
+                {card.title}
+              </h3>
+              <p className="text-[15px] text-ax-text-muted leading-[1.6]">
+                {card.body}
+              </p>
             </motion.div>
           ))}
         </div>

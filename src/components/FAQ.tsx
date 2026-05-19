@@ -1,29 +1,29 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
     q: "What is AXISCAP?",
-    a: "AXISCAP is an institutional-grade research terminal built for retail quants, students, and active investors. Think Bloomberg, but accessible, fast, and built for the next generation.",
+    a: "A research terminal built for retail quants, students, and independent analysts. AXISCAP brings institutional-grade tooling — live data, valuation models, backtesting, and AI-grounded insights — to operators who don't have Bloomberg-level budgets.",
   },
   {
-    q: "When will I get access?",
-    a: "Early access rolls out in waves based on waitlist position. The first 100 members get access at launch, followed by waves of 500 every two weeks.",
+    q: "When does access open?",
+    a: "Launch is June 28, 2026. Waitlist members receive access in priority order during the first two weeks.",
   },
   {
-    q: "Is it free?",
-    a: "The core terminal has a free tier with daily limits. Premium features — advanced backtesting, real-time data, AI insights, comparison overlays — are on a paid tier. Waitlist members get 3 months of premium free at launch.",
+    q: "How much does it cost?",
+    a: "The core terminal is free. Premium features — extended backtesting, real-time data feeds, advanced AI analysis, multi-portfolio simulation — are available on a paid tier. Waitlist members receive 3 months of premium complimentary at launch.",
   },
   {
-    q: "What data sources do you use?",
-    a: "Real-time market data from Yahoo Finance, Alpha Vantage, and exchange feeds. Insider activity from SEC EDGAR (US) and SEBI PIT (India). News from multiple sources. AI insights powered by Google Gemini, grounded in real data only.",
+    q: "Where does the data come from?",
+    a: "Market data from Yahoo Finance, Alpha Vantage, and direct exchange APIs. Insider activity from SEC EDGAR (US) and SEBI PIT disclosures (India). AI analysis from Google Gemini, constrained to real input data — no hallucinated metrics.",
   },
   {
-    q: "Can I invest in AXISCAP?",
-    a: "Not yet open to outside investors. If you're a strategic partner or angel interested in early-stage fintech infrastructure, reach out at arnavsgoyal@gmail.com.",
+    q: "Can I invest?",
+    a: "AXISCAP is not currently raising. For strategic partnerships, contact arnavsgoyal@gmail.com.",
   },
 ];
 
@@ -31,59 +31,47 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="relative py-[120px] md:py-[160px] px-6">
+    <section className="py-[120px] md:py-[160px] px-6">
       <div className="max-w-[800px] mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.3 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16"
         >
-          <span className="inline-block glass rounded-full px-4 py-1.5 font-mono text-[10px] tracking-[4px] text-axis-amber uppercase mb-6">
+          <p className="text-[11px] text-ax-text-dim tracking-[3px] uppercase mb-4">
             FAQ
-          </span>
-          <h2 className="font-sans font-light text-[32px] md:text-[56px] text-white leading-tight">
-            Frequently Asked
+          </p>
+          <h2 className="font-light text-[36px] md:text-[56px] text-white leading-tight tracking-[-1.5px]">
+            Common questions.
           </h2>
         </motion.div>
 
-        <div className="glass-strong rounded-2xl overflow-hidden">
+        <div>
           {faqs.map((faq, i) => (
-            <div
-              key={i}
-              className={i < faqs.length - 1 ? "border-b border-white/[0.05]" : ""}
-            >
+            <div key={i} className="border-b border-ax-border">
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between px-7 md:px-8 py-6 text-left hover:bg-white/[0.02] transition-colors duration-200"
+                className="w-full flex items-center justify-between py-6 text-left"
               >
-                <span className="font-sans font-medium text-[16px] md:text-[17px] text-white pr-4">
+                <span className="font-medium text-[18px] text-white pr-4">
                   {faq.q}
                 </span>
-                <motion.span
-                  animate={{ rotate: open === i ? 180 : 0 }}
-                  transition={{ duration: 0.2 }}
-                  className="shrink-0"
+                <span
+                  className="shrink-0 transition-transform duration-200"
+                  style={{ transform: open === i ? "rotate(180deg)" : "rotate(0deg)" }}
                 >
-                  <ChevronDown className="w-4 h-4 text-axis-text3" />
-                </motion.span>
+                  <ChevronDown className="w-4 h-4 text-ax-text-dim" />
+                </span>
               </button>
-              <AnimatePresence>
-                {open === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.25 }}
-                    className="overflow-hidden"
-                  >
-                    <p className="font-mono text-[13px] text-axis-text2 leading-[1.8] px-7 md:px-8 pb-6">
-                      {faq.a}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {open === i && (
+                <div className="pb-6">
+                  <p className="text-[15px] text-ax-text-muted leading-[1.7]">
+                    {faq.a}
+                  </p>
+                </div>
+              )}
             </div>
           ))}
         </div>

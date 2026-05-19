@@ -62,43 +62,37 @@ export default function TickerTape() {
   const row = items.map((item, i) => (
     <span
       key={i}
-      className="inline-flex items-center gap-2.5 px-6 whitespace-nowrap"
+      className="inline-flex items-center gap-2 px-5 whitespace-nowrap"
     >
-      <span className="text-axis-amber/80 font-mono text-[10px] tracking-[1px] font-medium">
+      <span className="text-white font-medium text-[12px]">
         {item.symbol}
       </span>
-      <span className="text-white/80 font-mono text-[11px] tabular-nums">
+      <span className="text-white font-mono text-[12px] tabular-nums">
         {item.price}
       </span>
       {item.changePct !== null && (
         <span
-          className={`font-mono text-[10px] tabular-nums ${
-            item.changePct >= 0 ? "text-axis-teal/80" : "text-axis-red/80"
+          className={`font-mono text-[11px] tabular-nums ${
+            item.changePct >= 0 ? "text-ax-green" : "text-ax-red"
           }`}
         >
           {item.changePct >= 0 ? "+" : ""}
           {item.changePct.toFixed(2)}%
         </span>
       )}
-      <span className="text-white/5 ml-2">|</span>
     </span>
   ));
 
   return (
     <div
-      className="relative w-full h-[36px] md:h-[40px] overflow-hidden flex items-center glass"
-      style={{ borderLeft: "none", borderRight: "none", borderRadius: 0 }}
+      className="w-full h-[36px] bg-ax-bg-subtle overflow-hidden flex items-center border-b border-ax-border"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Fade masks */}
-      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#030508] to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#030508] to-transparent z-10 pointer-events-none" />
-
       <div
         className="flex whitespace-nowrap"
         style={{
-          animation: "ticker-scroll 90s linear infinite",
+          animation: "ticker-scroll 120s linear infinite",
           animationPlayState: paused ? "paused" : "running",
         }}
       >
