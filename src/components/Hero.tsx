@@ -18,9 +18,9 @@ export default function Hero() {
           src="/og-image.png"
           alt=""
           fill
-          className="object-cover opacity-[0.12] md:opacity-[0.12] max-md:opacity-[0.08]"
+          className="object-cover opacity-[0.25] md:opacity-[0.30]"
           style={{
-            filter: "blur(2px) saturate(0.7) brightness(0.6)",
+            filter: "blur(1px) saturate(0.8) brightness(0.7)",
           }}
           priority
           sizes="100vw"
@@ -32,7 +32,7 @@ export default function Hero() {
         className="absolute inset-0 z-[1]"
         style={{
           background:
-            "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)",
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.75) 100%)",
         }}
       />
 
