@@ -11,23 +11,65 @@ export default function Hero() {
   });
 
   return (
-    <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6">
+    <section className="relative flex flex-col items-center justify-center min-h-[calc(100vh-80px)] px-6 overflow-hidden">
+      {/* Layer 1 — Faded dashboard background */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/og-image.png"
+          alt=""
+          fill
+          className="object-cover opacity-[0.12] md:opacity-[0.12] max-md:opacity-[0.08]"
+          style={{
+            filter: "blur(2px) saturate(0.7) brightness(0.6)",
+          }}
+          priority
+          sizes="100vw"
+        />
+      </div>
+
+      {/* Layer 2 — Radial vignette overlay */}
+      <div
+        className="absolute inset-0 z-[1]"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.85) 100%)",
+        }}
+      />
+
+      {/* Layer 3 — Bottom fade to black */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-[200px] z-[2]"
+        style={{
+          background: "linear-gradient(to bottom, transparent, #000000)",
+        }}
+      />
+
+      {/* Layer 4 — Subtle green glow behind logo */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[60%] w-[600px] h-[600px] z-[5] pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(circle, rgba(0,255,136,0.08) 0%, transparent 70%)",
+          filter: "blur(80px)",
+        }}
+      />
+
       {/* Waitlist pill — top left */}
       <motion.div
         {...fadeIn(0)}
-        className="absolute top-10 left-6 md:left-10 flex items-center gap-2"
+        className="absolute top-10 left-6 md:left-10 flex items-center gap-2 z-10"
       >
         <span
           className="w-2 h-2 rounded-full bg-ax-green"
           style={{ animation: "pulse-dot 2s ease-in-out infinite" }}
         />
-        <span className="text-[11px] font-medium text-white tracking-[2px] uppercase border border-ax-border rounded-full px-3 py-1">
+        <span className="text-[11px] font-medium text-white tracking-[2px] uppercase border border-white/15 rounded-full px-3 py-1">
           WAITLIST
         </span>
       </motion.div>
 
       {/* Center content */}
-      <div className="flex flex-col items-center text-center max-w-3xl">
+      <div className="relative z-10 flex flex-col items-center text-center max-w-3xl">
         <motion.div {...fadeIn(0.08)}>
           <Image
             src="/axiscap-logo.png"
@@ -69,8 +111,8 @@ export default function Hero() {
         </motion.p>
       </div>
 
-      {/* Bottom separator */}
-      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-ax-border" />
+      {/* Bottom separator — on top of fade */}
+      <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-ax-border z-[3]" />
     </section>
   );
 }

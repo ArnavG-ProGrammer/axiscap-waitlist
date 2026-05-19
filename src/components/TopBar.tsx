@@ -34,7 +34,7 @@ export default function TopBar() {
   }, []);
 
   return (
-    <div className="sticky top-0 z-50 bg-black border-b border-ax-border">
+    <div className="sticky top-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/[0.06]">
       <div className="flex items-center justify-between h-11 px-5 max-w-[1400px] mx-auto">
         {/* Left — Logo + wordmark */}
         <div className="flex items-center gap-2.5">

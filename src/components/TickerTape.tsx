@@ -85,7 +85,7 @@ export default function TickerTape() {
 
   return (
     <div
-      className="w-full h-[36px] bg-ax-bg-subtle overflow-hidden flex items-center border-b border-ax-border"
+      className="w-full h-[36px] bg-black/60 backdrop-blur-xl overflow-hidden flex items-center border-b border-white/[0.06]"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
