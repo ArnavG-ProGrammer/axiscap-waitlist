@@ -5,20 +5,27 @@ import { confirmationEmail } from "@/lib/emails/confirmation";
 import { adminNotificationEmail } from "@/lib/emails/admin-notification";
 
 export async function POST(req: NextRequest) {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const resendKey = process.env.RESEND_API_KEY;
-  const adminEmail = process.env.ADMIN_EMAIL;
-
-  if (!supabaseUrl || !supabaseKey) {
-    console.error("[AXISCAP] Missing env var: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
-    return NextResponse.json({ error: "server_error" }, { status: 500 });
-  }
-
-  const supabase = createClient(supabaseUrl, supabaseKey);
-
   try {
-    const body = await req.json();
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    const resendKey = process.env.RESEND_API_KEY;
+    const adminEmail = process.env.ADMIN_EMAIL;
+
+    if (!supabaseUrl || !supabaseKey) {
+      console.error("[AXISCAP] Missing env var: NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY");
+      console.error("[AXISCAP] URL present:", !!supabaseUrl, "KEY present:", !!supabaseKey);
+      return NextResponse.json({ error: "Configuration error. Contact support." }, { status: 500 });
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    }
+
     const { email, full_name, role, interest_area, referral_source } = body;
 
     if (!email || !full_name || !role || !interest_area) {
@@ -29,11 +36,16 @@ export async function POST(req: NextRequest) {
     }
 
     // Check duplicate
-    const { data: existing } = await supabase
+    const { data: existing, error: selectError } = await supabase
       .from("waitlist")
       .select("position")
       .eq("email", email)
       .maybeSingle();
+
+    if (selectError) {
+      console.error("[AXISCAP] Supabase select error:", selectError);
+      return NextResponse.json({ error: "Database error: " + selectError.message }, { status: 500 });
+    }
 
     if (existing) {
       return NextResponse.json(
@@ -53,9 +65,12 @@ export async function POST(req: NextRequest) {
       .select("position")
       .single();
 
-    if (error) throw error;
+    if (error) {
+      console.error("[AXISCAP] Supabase insert error:", error);
+      return NextResponse.json({ error: "Database error: " + error.message }, { status: 500 });
+    }
 
-    // Send emails (best-effort)
+    // Send emails (best-effort, never block the response)
     if (resendKey) {
       try {
         const resend = new Resend(resendKey);
@@ -85,13 +100,12 @@ export async function POST(req: NextRequest) {
       } catch (emailErr) {
         console.error("[AXISCAP] Email send failed:", emailErr);
       }
-    } else {
-      console.error("[AXISCAP] Missing env var: RESEND_API_KEY");
     }
 
     return NextResponse.json({ success: true, position: data.position });
-  } catch (err) {
-    console.error("[AXISCAP] Waitlist error:", err);
-    return NextResponse.json({ error: "server_error" }, { status: 500 });
+  } catch (err: unknown) {
+    console.error("[AXISCAP] Unhandled waitlist error:", err);
+    const message = err instanceof Error ? err.message : "Unknown error";
+    return NextResponse.json({ error: "server_error: " + message }, { status: 500 });
   }
 }
