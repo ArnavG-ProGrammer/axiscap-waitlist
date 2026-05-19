@@ -11,38 +11,49 @@ const SYMBOLS = [
 
 let cache: { data: Record<string, { price: number; changePct: number }>; ts: number } | null = null;
 
+async function fetchQuote(symbol: string): Promise<{ price: number; changePct: number } | null> {
+  try {
+    const url = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(symbol)}?interval=1d&range=1d`;
+    const res = await fetch(url, {
+      headers: { "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" },
+    });
+    if (!res.ok) return null;
+
+    const json = await res.json();
+    const meta = json.chart?.result?.[0]?.meta;
+    if (!meta) return null;
+
+    const price = meta.regularMarketPrice ?? 0;
+    const prevClose = meta.chartPreviousClose ?? meta.previousClose ?? price;
+    const changePct = prevClose !== 0 ? ((price - prevClose) / prevClose) * 100 : 0;
+
+    return { price, changePct };
+  } catch {
+    return null;
+  }
+}
+
 export async function GET() {
-  if (cache && Date.now() - cache.ts < 20000) {
+  if (cache && Date.now() - cache.ts < 30000) {
     return NextResponse.json(cache.data);
   }
 
-  try {
-    const url = `https://query1.finance.yahoo.com/v7/finance/quote?symbols=${SYMBOLS.join(",")}`;
-    const res = await fetch(url, {
-      headers: { "User-Agent": "Mozilla/5.0" },
-    });
+  const result: Record<string, { price: number; changePct: number }> = {};
 
-    if (!res.ok) throw new Error(`Yahoo Finance returned ${res.status}`);
-
-    const json = await res.json();
-    const result: Record<string, { price: number; changePct: number }> = {};
-
-    for (const quote of json.quoteResponse?.result ?? []) {
-      result[quote.symbol] = {
-        price: quote.regularMarketPrice ?? 0,
-        changePct: quote.regularMarketChangePercent ?? 0,
-      };
+  // Fetch all symbols in parallel
+  const promises = SYMBOLS.map(async (symbol) => {
+    const data = await fetchQuote(symbol);
+    if (data) {
+      result[symbol] = data;
     }
+  });
 
+  await Promise.all(promises);
+
+  // Only cache if we got at least some data
+  if (Object.keys(result).length > 0) {
     cache = { data: result, ts: Date.now() };
-    return NextResponse.json(result);
-  } catch (err) {
-    console.error("[AXISCAP] Ticker fetch error:", err);
-    // Return empty data with dashes
-    const fallback: Record<string, { price: number; changePct: number }> = {};
-    for (const s of SYMBOLS) {
-      fallback[s] = { price: 0, changePct: 0 };
-    }
-    return NextResponse.json(fallback);
   }
+
+  return NextResponse.json(result);
 }
