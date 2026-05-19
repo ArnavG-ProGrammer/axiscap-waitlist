@@ -43,7 +43,13 @@ export default function TickerTape() {
         setItems(
           Object.entries(data).map(([symbol, info]) => ({
             symbol: DISPLAY_NAMES[symbol] || symbol,
-            price: info.price != null ? info.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "—",
+            price:
+              info.price != null && info.price !== 0
+                ? info.price.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })
+                : "—",
             changePct: info.changePct ?? null,
           }))
         );
@@ -54,30 +60,40 @@ export default function TickerTape() {
   if (items.length === 0) return null;
 
   const row = items.map((item, i) => (
-    <span key={i} className="inline-flex items-center gap-2 px-5 whitespace-nowrap">
-      <span className="text-axis-amber font-mono text-[11px] tracking-wide">{item.symbol}</span>
-      <span className="text-white font-mono text-[11px]">{item.price}</span>
+    <span
+      key={i}
+      className="inline-flex items-center gap-2.5 px-6 whitespace-nowrap"
+    >
+      <span className="text-axis-amber/80 font-mono text-[10px] tracking-[1px] font-medium">
+        {item.symbol}
+      </span>
+      <span className="text-white/80 font-mono text-[11px] tabular-nums">
+        {item.price}
+      </span>
       {item.changePct !== null && (
         <span
-          className={`font-mono text-[11px] ${
-            item.changePct >= 0 ? "text-axis-teal" : "text-axis-red"
+          className={`font-mono text-[10px] tabular-nums ${
+            item.changePct >= 0 ? "text-axis-teal/80" : "text-axis-red/80"
           }`}
         >
-          {item.changePct >= 0 ? "▲" : "▼"} {Math.abs(item.changePct).toFixed(2)}%
+          {item.changePct >= 0 ? "+" : ""}
+          {item.changePct.toFixed(2)}%
         </span>
       )}
+      <span className="text-white/5 ml-2">|</span>
     </span>
   ));
 
   return (
     <div
-      className="relative w-full h-[32px] md:h-[38px] bg-axis-bg overflow-hidden border-y border-axis-border/50 flex items-center"
+      className="relative w-full h-[36px] md:h-[40px] overflow-hidden flex items-center glass"
+      style={{ borderLeft: "none", borderRight: "none", borderRadius: 0 }}
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
       {/* Fade masks */}
-      <div className="absolute left-0 top-0 bottom-0 w-20 bg-gradient-to-r from-axis-bg to-transparent z-10 pointer-events-none" />
-      <div className="absolute right-0 top-0 bottom-0 w-20 bg-gradient-to-l from-axis-bg to-transparent z-10 pointer-events-none" />
+      <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-[#030508] to-transparent z-10 pointer-events-none" />
+      <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-[#030508] to-transparent z-10 pointer-events-none" />
 
       <div
         className="flex whitespace-nowrap"

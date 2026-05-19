@@ -62,25 +62,32 @@ export default function LiveStats() {
   ];
 
   return (
-    <section className="py-[120px] px-6">
-      <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+    <section className="relative py-[100px] md:py-[140px] px-6">
+      {/* Divider line */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[80%] max-w-3xl h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
+
+      <div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12">
         {stats.map((stat, i) => (
           <motion.div
             key={i}
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 24 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.5 }}
-            transition={{ delay: i * 0.15, duration: 0.5 }}
+            transition={{ delay: i * 0.12, duration: 0.6 }}
+            className="glass rounded-xl p-8 text-center"
           >
-            <p className="font-sans font-light text-[72px] md:text-[96px] text-axis-teal leading-none">
+            <p className="font-sans font-light text-[56px] md:text-[80px] text-axis-teal leading-none teal-text-glow tabular-nums">
               <AnimatedNumber value={stat.value} />
             </p>
-            <p className="font-mono text-[13px] tracking-[3px] uppercase text-axis-text2 mt-4">
+            <p className="font-mono text-[11px] tracking-[3px] uppercase text-axis-text2 mt-4">
               {stat.label}
             </p>
           </motion.div>
         ))}
       </div>
+
+      {/* Divider line */}
+      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80%] max-w-3xl h-[1px] bg-gradient-to-r from-transparent via-white/[0.06] to-transparent" />
     </section>
   );
 }

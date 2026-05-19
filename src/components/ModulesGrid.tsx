@@ -17,35 +17,56 @@ const modules = [
 
 export default function ModulesGrid() {
   return (
-    <section className="py-[120px] px-6">
-      <div className="max-w-6xl mx-auto">
-        <p className="font-mono text-[12px] tracking-[4px] text-axis-amber uppercase text-center mb-4">
-          10 MODULES
-        </p>
-        <h2 className="font-sans font-light text-[36px] md:text-[56px] text-white text-center leading-tight">
-          One terminal. Everything you need.
-        </h2>
-        <p className="font-mono text-[14px] text-axis-text2 text-center max-w-[700px] mx-auto mt-4 leading-[1.6]">
-          From live markets to backtesting, every tool a professional analyst
-          uses — accessible, fast, beautifully designed.
-        </p>
+    <section className="relative py-[120px] md:py-[160px] px-6 overflow-hidden">
+      {/* Background accent */}
+      <div
+        className="absolute bottom-0 right-0 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{
+          background: "radial-gradient(circle, rgba(74,158,255,0.04) 0%, transparent 60%)",
+        }}
+      />
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-3 mt-16">
+      <div className="relative max-w-6xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="inline-block glass rounded-full px-4 py-1.5 font-mono text-[10px] tracking-[4px] text-axis-amber uppercase mb-6">
+            10 MODULES
+          </span>
+          <h2 className="font-sans font-light text-[32px] md:text-[56px] text-white leading-tight">
+            One terminal. Everything you need.
+          </h2>
+          <p className="font-mono text-[13px] text-axis-text2 max-w-[650px] mx-auto mt-5 leading-[1.7]">
+            From live markets to backtesting, every tool a professional analyst
+            uses — accessible, fast, beautifully designed.
+          </p>
+        </motion.div>
+
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
           {modules.map((name, i) => (
             <motion.div
               key={i}
               initial={{ opacity: 0, y: 16 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ delay: i * 0.08, duration: 0.4 }}
-              className="p-7 rounded border border-[rgba(0,212,160,0.15)] bg-[rgba(15,25,22,0.6)] hover:border-[rgba(0,212,160,0.4)] hover:shadow-[inset_0_0_20px_rgba(0,212,160,0.05)] transition-all duration-200"
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ delay: i * 0.06, duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="group relative glass glass-hover rounded-lg p-6 overflow-hidden cursor-default"
             >
-              <p className="font-mono text-[11px] tracking-[1px] text-axis-text3 mb-2">
-                {String(i + 1).padStart(2, "0")}
-              </p>
-              <p className="font-sans font-medium text-[20px] text-white tracking-[-0.3px]">
-                {name}
-              </p>
+              {/* Subtle top edge highlight */}
+              <div className="absolute top-0 left-4 right-4 h-[1px] bg-gradient-to-r from-transparent via-axis-teal/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+              <div className="relative">
+                <p className="font-mono text-[10px] tracking-[2px] text-axis-text3 mb-2 tabular-nums">
+                  {String(i + 1).padStart(2, "0")}
+                </p>
+                <p className="font-sans font-medium text-[17px] md:text-[18px] text-white tracking-[-0.3px]">
+                  {name}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>

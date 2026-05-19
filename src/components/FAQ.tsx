@@ -31,27 +31,42 @@ export default function FAQ() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section className="py-[120px] px-6">
+    <section className="relative py-[120px] md:py-[160px] px-6">
       <div className="max-w-[800px] mx-auto">
-        <h2 className="font-sans font-light text-[36px] md:text-[56px] text-white text-center leading-tight mb-16">
-          Frequently Asked
-        </h2>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <span className="inline-block glass rounded-full px-4 py-1.5 font-mono text-[10px] tracking-[4px] text-axis-amber uppercase mb-6">
+            FAQ
+          </span>
+          <h2 className="font-sans font-light text-[32px] md:text-[56px] text-white leading-tight">
+            Frequently Asked
+          </h2>
+        </motion.div>
 
-        <div className="flex flex-col gap-0">
+        <div className="glass-strong rounded-2xl overflow-hidden">
           {faqs.map((faq, i) => (
-            <div key={i} className="border-b border-axis-border">
+            <div
+              key={i}
+              className={i < faqs.length - 1 ? "border-b border-white/[0.05]" : ""}
+            >
               <button
                 onClick={() => setOpen(open === i ? null : i)}
-                className="w-full flex items-center justify-between py-6 text-left"
+                className="w-full flex items-center justify-between px-7 md:px-8 py-6 text-left hover:bg-white/[0.02] transition-colors duration-200"
               >
-                <span className="font-sans font-medium text-[18px] text-white pr-4">
+                <span className="font-sans font-medium text-[16px] md:text-[17px] text-white pr-4">
                   {faq.q}
                 </span>
                 <motion.span
                   animate={{ rotate: open === i ? 180 : 0 }}
                   transition={{ duration: 0.2 }}
+                  className="shrink-0"
                 >
-                  <ChevronDown className="w-5 h-5 text-axis-text3 shrink-0" />
+                  <ChevronDown className="w-4 h-4 text-axis-text3" />
                 </motion.span>
               </button>
               <AnimatePresence>
@@ -63,7 +78,7 @@ export default function FAQ() {
                     transition={{ duration: 0.25 }}
                     className="overflow-hidden"
                   >
-                    <p className="font-mono text-[14px] text-axis-text2 leading-[1.7] pb-6">
+                    <p className="font-mono text-[13px] text-axis-text2 leading-[1.8] px-7 md:px-8 pb-6">
                       {faq.a}
                     </p>
                   </motion.div>
