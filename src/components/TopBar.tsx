@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 
 const ZONES = [
   { label: "NYC", tz: "America/New_York" },
@@ -64,13 +65,21 @@ export default function TopBar() {
           ))}
         </div>
 
-        {/* Right — CTA */}
-        <a
-          href="#signup"
-          className="text-[12px] font-medium text-white border border-white/20 rounded px-4 py-1.5 hover:bg-white hover:text-black transition-colors duration-200"
-        >
-          JOIN WAITLIST
-        </a>
+        {/* Right — Links */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/overview"
+            className="text-[12px] font-medium text-ax-text-muted hover:text-white transition-colors duration-200 hidden sm:inline"
+          >
+            OVERVIEW
+          </Link>
+          <a
+            href="#signup"
+            className="text-[12px] font-medium text-white border border-white/20 rounded px-4 py-1.5 hover:bg-white hover:text-black transition-colors duration-200"
+          >
+            JOIN WAITLIST
+          </a>
+        </div>
       </div>
     </div>
   );
