@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ExternalLink } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 const FEATURES = [
   {
@@ -181,15 +181,9 @@ export default function OverviewPage() {
               >
                 REQUEST ACCESS →
               </Link>
-              <a
-                href="https://axis-cap-terminal.vercel.app"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 text-[14px] font-medium text-ax-text-muted border border-ax-border rounded-md px-7 py-4 hover:border-white/30 hover:text-white transition-all duration-200"
-              >
-                VIEW LIVE APP
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
+              <span className="flex items-center gap-2 text-[14px] font-medium text-ax-text-dim border border-ax-border rounded-md px-7 py-4 cursor-default">
+                COMING SOON
+              </span>
             </div>
           </div>
         </div>
