@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Hero() {
   const fadeIn = (delay: number) => ({
@@ -103,8 +104,17 @@ export default function Hero() {
           REQUEST ACCESS →
         </motion.a>
 
+        <motion.div {...fadeIn(0.4)} className="mt-5">
+          <Link
+            href="/overview"
+            className="inline-block text-[13px] font-medium text-ax-text-muted border border-white/15 rounded-md px-7 py-3 hover:border-white/40 hover:text-white transition-all duration-200"
+          >
+            VIEW PRODUCT OVERVIEW
+          </Link>
+        </motion.div>
+
         <motion.p
-          {...fadeIn(0.4)}
+          {...fadeIn(0.48)}
           className="mt-6 text-[13px] text-ax-text-dim"
         >
           Limited early access. Launch June 28, 2026.
